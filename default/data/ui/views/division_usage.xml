@@ -1,0 +1,93 @@
+<view autoCancelInterval="90" isVisible="true" objectMode="SimpleForm" onunloadCancelJobs="true" template="dashboard.html">
+  <label>Divison Usage</label>
+  <module name="AccountBar" layoutPanel="appHeader"/>
+  <module name="AppBar" layoutPanel="navigationHeader"/>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">*</param>
+    <param name="clearOnJobDispatch">False</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="Message" layoutPanel="messaging">
+    <param name="filter">splunk.search.job</param>
+    <param name="clearOnJobDispatch">True</param>
+    <param name="maxSize">1</param>
+  </module>
+  <module name="TitleBar" layoutPanel="viewHeader">
+    <param name="actionsMenuFilter">dashboard</param>
+  </module>
+  <module name="TimeRangePicker" layoutPanel="viewHeader">
+    <param name="searchWhenChanged">False</param>
+    <param name="selected">Last 4 hours</param>
+    <module name="SubmitButton">
+      <param name="allowSoftSubmit">True</param>
+      <param name="label">Search</param>
+      
+      <module name="HiddenSavedSearch" layoutPanel="panel_row1_col1" group="Division Usage" autoRun="False">
+        <param name="savedSearch">Division Usage</param>
+        <param name="groupLabel">Division Usage</param>
+        <module name="ViewstateAdapter">
+          <param name="suppressionList"/>
+          <param name="savedSearch">Division Usage</param>
+          <module name="HiddenFieldPicker">
+            <param name="strictMode">True</param>
+            <module name="JobProgressIndicator"/>
+            <module name="Paginator">
+              <param name="count">10</param>
+              <param name="entityName">results</param>
+              <module name="EnablePreview">
+                <param name="enable">True</param>
+                <param name="display">False</param>
+                <module name="SimpleResultsTable">
+                  <param name="drilldown">row</param>
+                  <param name="entityName">results</param>
+                  <param name="allowTransformedFieldSelect">True</param>
+                  <module name="Gimp"/>
+                  <module name="ConvertToDrilldownSearch">
+                    <module name="ViewRedirector">
+                      <param name="viewTarget">flashtimeline</param>
+                    </module>
+                  </module>
+                </module>
+                <module name="ViewRedirectorLink">
+                  <param name="viewTarget">flashtimeline</param>
+                </module>
+              </module>
+            </module>
+          </module>
+        </module>
+      </module>
+      <module name="HiddenSearch" layoutPanel="panel_row2_col1" group="Index Usage by Dept" autoRun="False">
+        <param name="search">index=_internal source=*metrics.log per_index_thruput | eval MB=kb/1024 | stats sum(MB) AS MBytes, values(series) AS Index(es) by dept | sort - MBytes | rename dept AS Dept | table Dept, MBytes, Index(es)</param>
+        <param name="groupLabel">Index Usage</param>
+        <module name="ViewstateAdapter">
+          <module name="HiddenFieldPicker">
+            <param name="strictMode">True</param>
+            <module name="JobProgressIndicator"/>
+            <module name="Paginator">
+              <param name="count">10</param>
+              <param name="entityName">results</param>
+              <module name="EnablePreview">
+                <param name="enable">True</param>
+                <param name="display">False</param>
+                <module name="SimpleResultsTable">
+                  <param name="drilldown">row</param>
+                  <param name="entityName">results</param>
+                  <param name="allowTransformedFieldSelect">True</param>
+                  <module name="Gimp"/>
+                  <module name="ConvertToDrilldownSearch">
+                    <module name="ViewRedirector">
+                      <param name="viewTarget">flashtimeline</param>
+                    </module>
+                  </module>
+                </module>
+                <module name="ViewRedirectorLink">
+                  <param name="viewTarget">flashtimeline</param>
+                </module>
+              </module>
+            </module>
+          </module>
+        </module>
+      </module>
+    </module>
+  </module>
+</view>

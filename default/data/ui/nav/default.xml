@@ -1,0 +1,8 @@
+<nav>
+  <view name="division_usage" default="true"/>
+
+  <collection label="Ad Hoc Search">
+    <saved source="unclassified"/>
+  </collection>
+
+</nav>
